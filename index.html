@@ -1,0 +1,180 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Verification - LANIX SHIPPING AND INDUSTRIAL ACADEMY</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .container {
+            max-width: 900px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+
+<div class="container mx-auto">
+    <div class="card p-8 sm:p-12 text-center">
+        <!-- Header Section -->
+        <div class="mb-8">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2">
+                LANIX SHIPPING AND INDUSTRIAL ACADEMY
+            </h1>
+            <p class="text-gray-600 text-lg">Certificate Verification System</p>
+        </div>
+
+        <!-- Verification Form Section -->
+        <div class="max-w-lg mx-auto">
+            <form id="verification-form" class="space-y-6">
+                <div>
+                    <label for="certificate-number" class="sr-only">Certificate Number</label>
+                    <input id="certificate-number" name="certificate-number" type="text" autocomplete="off" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg transition duration-200"
+                           placeholder="Enter Certificate Number">
+                </div>
+                <div>
+                    <button type="submit"
+                            class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-lg font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200">
+                        Verify Certificate
+                    </button>
+                </div>
+            </form>
+
+            <!-- Status and Result Section -->
+            <div id="status-message" class="mt-6 text-center text-gray-500 hidden">
+                <div class="spinner-border animate-spin inline-block w-8 h-8 rounded-full border-4 border-t-blue-500 border-gray-200"></div>
+                <p class="mt-2">Verifying...</p>
+            </div>
+            
+            <div id="result-container" class="mt-6 hidden">
+                <!-- Result card will be inserted here by JavaScript -->
+            </div>
+
+            <!-- Error/Warning message -->
+            <div id="alert-message" class="mt-6 hidden">
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative" role="alert">
+                    <strong class="font-bold">Error!</strong>
+                    <span class="block sm:inline" id="alert-text"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Contact Information -->
+        <div class="mt-12 text-center text-gray-500">
+            <p class="text-sm">For more information, please contact:</p>
+            <p class="mt-1 text-base font-semibold">
+                Phone: 04561 240048, 9791713464
+            </p>
+            <p class="text-base font-semibold">
+                Email: lanix.institution@gmail.com
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('verification-form');
+        const certificateInput = document.getElementById('certificate-number');
+        const statusMessage = document.getElementById('status-message');
+        const resultContainer = document.getElementById('result-container');
+        const alertMessage = document.getElementById('alert-message');
+        const alertText = document.getElementById('alert-text');
+
+        // Hardcoded list of valid certificates for demonstration purposes
+        const validCertificates = [
+            { id: 'LNX/SET7-275', name: 'SWEETEN KUMAR', course: 'SMAW 6G', date: '23-09-2022' },
+            { id: 'LNX/SET7-56', name: 'SWEETEN KUMAR', course: 'GMAW 6G', date: '05-02-2022' },
+            { id: 'LNX/SET8-0309', name: 'SWEETEN KUMAR', course: 'FABRICATION', date: '11-06-2025' },
+            { id: 'LNX/SET8-0310', name: 'SWEETEN KUMAR', course: 'OXY-Fuel Cutting', date: '11-06-2025' },
+            { id: 'LNX/SET8-0310', name: 'SWEETEN KUMAR', course: 'OXY-Fuel Cutting', date: '11-06-2025' },
+            { id: 'LNX/SET7-55', name: 'SREEJITH KUMAR', course: 'GMAW 6G', date: '05-02-2022' },
+            { id: 'LNX/SET8-0325', name: 'BIJIN BINU', course: 'GMAW 6G', date: '07-07-2025' },
+            { id: 'LNX/SET8-0324', name: 'BIJIN BINU', course: 'SMAW 6G', date: '02-07-2025' },
+            { id: 'LNX/SET7-0326', name: 'BIJIN BINU', course: 'OXY-Fuel Cutting', date: '18-07-2025' },
+            { id: 'LNX/SET7-0286', name: 'BIJIN BINU', course: 'METAL FABRICATION', date: '08-09-2023' },
+            { id: 'LNX/SET7-56', name: 'AUSTIN ALEX', course: 'GMAW 6G', date: '19-06-2024' },
+            { id: 'LNX/SET7-0302', name: 'ABISHAKE KUMARADHAS', course: 'SMAW 6G', date: '15-09-2024' },
+            { id: 'LNX/SET7-0306', name: 'ABISHAKE KUMARADHAS', course: 'GMAW 6G', date: '14-10-2024' },
+            { id: 'LNX/SET7-0305', name: 'KONSHAKA STALIN', course: 'SMAW 6G', date: '28-10-2024' },
+            { id: 'LNX/SET7-0307', name: 'JENEFER RAJ', course: 'SMAW 6G', date: '12-12-2024' },
+            { id: 'LNX/SET7-0308', name: 'JENEFER RAJ', course: 'GMAW 6G', date: '22-01-2025' },
+            { id: 'LNX/SET7-0309', name: 'JENEFER RAJ', course: 'GTAW 6G', date: '26-06-2025' },
+            { id: 'LNX/SET7-0311', name: 'VIPIN LAWRANCE', course: 'SMAW 6G', date: '28-03-2025' },
+            { id: 'LNX/SET7-0312', name: 'JEKATHEESH', course: 'GMAW 6G', date: '03-05-2025' },
+            { id: 'LNX/SET8-0313', name: 'IMMANUAL', course: 'METAL FABRICATION', date: '12-06-2025' },
+            { id: 'LNX/SET8-0314', name: 'IMMANUAL', course: 'OXY-Fuel Cutting', date: '12-06-2025' },
+            { id: 'LNX/SET8-0316', name: 'CHRISTAN', course: 'SMAW 6G', date: '01-07-2025' },
+            { id: 'LNX/SET8-0317', name: 'CHRISTAN', course: 'METAL FABRICATION', date: '12-06-2025' },
+            { id: 'LNX/SET8-0318', name: 'CHRISTAN', course: 'OXY-Fuel Cutting', date: '12-06-2025' },
+            { id: 'LNX/SET8-0320', name: 'AJEESH', course: 'SMAW 6G', date: '01-07-2025' },
+            { id: 'LNX/SET8-0321', name: 'AJEESH', course: 'METAL FABRICATION', date: '12-06-2025' },
+            { id: 'LNX/SET8-0322', name: 'AJEESH', course: 'OXY-Fuel Cutting', date: '12-06-2025' },
+            { id: 'LNX/SET8-0328', name: 'IMMANUAL', course: 'SMAW 6G', date: '18-08-2025' },
+        ];
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Reset UI states
+            resultContainer.classList.add('hidden');
+            alertMessage.classList.add('hidden');
+            statusMessage.classList.remove('hidden');
+
+            const certNumber = certificateInput.value.trim().toUpperCase();
+            
+            if (certNumber === '') {
+                statusMessage.classList.add('hidden');
+                alertText.textContent = 'Please enter a certificate number.';
+                alertMessage.classList.remove('hidden');
+                return;
+            }
+
+            // Simulate a server request with a delay
+            setTimeout(() => {
+                const certificate = validCertificates.find(cert => cert.id === certNumber);
+                
+                statusMessage.classList.add('hidden');
+
+                if (certificate) {
+                    const resultCard = `
+                        <div class="bg-green-50 p-6 rounded-xl border-2 border-green-200">
+                            <h2 class="text-2xl font-bold text-green-700 mb-4 text-center">Certificate Found!</h2>
+                            <div class="text-left text-gray-700 space-y-2">
+                                <p><strong class="font-semibold text-gray-900">Certificate ID:</strong> ${certificate.id}</p>
+                                <p><strong class="font-semibold text-gray-900">Holder Name:</strong> ${certificate.name}</p>
+                                <p><strong class="font-semibold text-gray-900">Course:</strong> ${certificate.course}</p>
+                                <p><strong class="font-semibold text-gray-900">Completion Date:</strong> ${certificate.date}</p>
+                            </div>
+                        </div>
+                    `;
+                    resultContainer.innerHTML = resultCard;
+                    resultContainer.classList.remove('hidden');
+                } else {
+                    const resultCard = `
+                        <div class="bg-red-50 p-6 rounded-xl border-2 border-red-200">
+                            <h2 class="text-2xl font-bold text-red-700 mb-4 text-center">Certificate Not Found</h2>
+                            <p class="text-center text-gray-700">The certificate number you entered is not valid. Please check the number and try again.</p>
+                        </div>
+                    `;
+                    resultContainer.innerHTML = resultCard;
+                    resultContainer.classList.remove('hidden');
+                }
+            }, 1500); // 1.5 second delay to simulate network latency
+        });
+    });
+</script>
+
+</body>
+</html>
